@@ -7,7 +7,7 @@
 # inputs should be 
 # (1) a n-by-W count matrix Y, where n is the number of samples and W is the number 
 # of bins
-# (2) a n-dimensional logical vector ip, indiating the allocation of IP samples.
+# (2) a n-dimensional logical vector c, indiating the allocation of IP samples.
 
 # Note that the notations in the code and data follow the notations in the manuscript.
 # ***END***
@@ -24,7 +24,7 @@ Rcpp::sourceCpp('zinb_hmm_x2.cpp');
 # ========================================================================================
 # ========================================================================================
 Y <- read.table("real_data_example.txt", header = TRUE);
-ip <- grepl("ip", names(Y));
+c <- grepl("ip", names(Y));
 Y <- as.matrix(t(Y));
 n <- dim(Y)[1];
 W <- dim(Y)[2];
@@ -65,7 +65,7 @@ z_start <- rbinom(W, 1, 0.5);
 s <- size_factors_estimator(Y, s_mode);
 g <- colSums(Y);
 start_time <- proc.time();
-M <- zinb_hmm(Y, ip, s, g, upp_eta_1, z_start, iter);
+M <- zinb_hmm(Y, c, s, g, upp_eta_1, z_start, iter);
 end_time <- proc.time();
 time <- end_time - start_time;
 # The MCMC outputs are stored in M
